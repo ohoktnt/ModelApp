@@ -4,7 +4,7 @@ import {Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import Tflite from 'tflite-react-native';
 
-// configure tflite for project
+// configure tflite for project - allows use to start using the tflite functions
 let tflite = new Tflite();
 
 const mobile = "MobileNet";
@@ -25,6 +25,7 @@ export default class App extends Component {
   onSelectModel(model) {
     this.setState({model});
 
+    // select model based on click
     switch(model) {
       case ssd:
         var modelFile = 'models/ssd_mobilenet.tflite';
@@ -46,6 +47,16 @@ export default class App extends Component {
         var modelFile = 'models/mobilenet_v1_1.0_224.tflite';
         var labelsFile = 'models/mobilenet_v1_1.0_224.txt';
     }
+    // input the model and label file into the load model method for tflite
+    tflite.loadModel({
+        model: modelFile,
+        labels: labelsFile,
+      },
+      // callback function
+      (err, res) => {
+        if (err) console.log(err)
+        else console.log(res)
+      });
   }
 
   render() {
