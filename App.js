@@ -22,6 +22,8 @@ export default class App extends Component {
     super(props);
     this.state = {
       model: null,
+      source: null, // to store the image the user selected
+      recognitions: null,
     }
   }
 
@@ -36,7 +38,80 @@ export default class App extends Component {
       } else if (response.customButton) {
           console.log('User clicked custom button');
       } else {
+        var path = response.path;
         console.log('Camera Opened');
+        this.setState({
+          //update state to selected photo
+          source: {uri: response.uri},
+        });
+        switch(this.state.model) {
+          case ssd:
+            tflite.detectObjectOnImage({
+              path: path,
+              threshold: 0.2,//preprocessing state to make it a little faster
+              numResultsPerClass: 1
+            }, (err, res) => {
+              if(err) console.log(err);
+              else {
+                console.log(res);
+                this.setState({recognitions: res});
+              }
+            })
+            break;
+          case yolo:
+            tflite.detectObjectOnImage({
+              path: path,
+              model: 'YOLO',
+              imageMean: 0.0,
+              imageStd: 255,
+              threshold: 0.4,
+              numResultsPerClass: 1,
+            }, (err, res) => {
+              if(err) console.log(err)
+              else {
+                console.log(res);
+                this.setState({recognitions: res});
+              }
+            })
+            break;
+          case deeplab:
+            tflite.runSegmentationOnImage({
+              path: path,
+            }, (err, res) => {
+              if(err) console.log(err)
+              else {
+                console.log(res);
+                this.setState({recognitions: res});
+              }
+            })
+            break;
+          case posenet:
+            tflite.runPoseNetOnImage({
+              path: path,
+              threshold: 0.8,
+            }, (err, res) => {
+              if(err) console.log(err)
+              else {
+                console.log(res);
+                this.setState({recognitions: res});
+              }
+            })
+            break;
+          default:
+            tflite.runModelOnImage({
+              path: path,
+              imageMean: 128.0,
+              imageStd: 128.0,
+              numResults: 3,
+              threshold: 0.05,
+            }, (err, res) => {
+              if(err) console.log(err)
+              else {
+                console.log(res);
+                this.setState({recognitions: res});
+              }
+            })
+        }
       }
     })
   }
