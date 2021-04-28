@@ -60,7 +60,7 @@ export default class App extends Component {
   }
 
   render() {
-
+    const {model} = this.state;
 
     var renderButton = (m) => {
       return(
@@ -76,13 +76,20 @@ export default class App extends Component {
       <LinearGradient 
         colors={['#fffc00', '#ffff70']} 
         style={styles.linearGradient}>
-          <View>
-            {renderButton(mobile)}
-            {renderButton(ssd)}
-            {renderButton(yolo)}
-            {renderButton(deeplab)}
-            {renderButton(posenet)}
-          </View>
+          {model ? (
+            <View>
+              <Button 
+                title="Get Image" 
+                buttonStyle={styles.button}></Button>
+            </View>
+          ) : (
+            <View>
+              {renderButton(mobile)}
+              {renderButton(ssd)}
+              {renderButton(yolo)}
+              {renderButton(deeplab)}
+              {renderButton(posenet)}
+            </View>)}
         </LinearGradient>
     );
   }
