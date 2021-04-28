@@ -20,6 +20,8 @@ target 'ModelApp' do
 
   pod 'TfliteReactNative', :path => '../node_modules/tflite-react-native'
 
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
   target 'ModelAppTests' do
     inherit! :complete
     # Pods for testing

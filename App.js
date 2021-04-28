@@ -3,6 +3,9 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import {Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import Tflite from 'tflite-react-native';
+import Imagepicker from 'react-native-image-picker';
+// 2.3.0 version bc image that the user picks, that image is stored
+// in cache. newer versions dont give the option to easily access the path 
 
 // configure tflite for project - allows use to start using the tflite functions
 let tflite = new Tflite();
