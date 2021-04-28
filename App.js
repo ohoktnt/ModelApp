@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Tflite from 'tflite-react-native';
+
+// configure tflite for project
+let tflite = new Tflite();
 
 const mobile = "MobileNet";
 const ssd = "SSD MobileNet";
