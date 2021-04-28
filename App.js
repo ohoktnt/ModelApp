@@ -25,6 +25,22 @@ export default class App extends Component {
     }
   }
 
+  onSelectImage() {
+    const options ={};
+    Imagepicker.launchImageLibrary(options, (response) => {
+      // error checking
+      if(response.didCancel) {
+        console.log("User cancelled Image Picker");
+      } else if (response.error) {
+         console.log('Error');
+      } else if (response.customButton) {
+          console.log('User clicked custom button');
+      } else {
+        console.log('Camera Opened');
+      }
+    })
+  }
+
   onSelectModel(model) {
     this.setState({model});
 
@@ -83,7 +99,8 @@ export default class App extends Component {
             <View>
               <Button 
                 title="Get Image" 
-                buttonStyle={styles.button}></Button>
+                buttonStyle={styles.button}
+                onPress={this.onSelectImage.bind(this)}></Button>
             </View>
           ) : (
             <View>
