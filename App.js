@@ -169,7 +169,7 @@ export default class App extends Component {
   renderResults() {
     const {model, recognitions, imageHeight, imageWidth} = this.state;
     switch(model) {
-      case ssd:
+      case ssd: // same as yolo 
       case yolo: 
         console.log(recognitions);
         return recognitions.map((res, id) => {
@@ -185,6 +185,16 @@ export default class App extends Component {
             </View>
           )
         })
+      case deeplab:
+        var base64image = `data:image/png;base64,${recognitions}`;
+        return recognitions.length > 0 ? (
+          <View>
+            <Image 
+              source={{uri: base64image}} 
+              style={styles.imageOutput}>
+            </Image>
+          </View>
+        ) : undefined;
     }
   }
 
