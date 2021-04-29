@@ -17,6 +17,9 @@ const yolo = "Tiny YOLOv2";
 const deeplab = "Deeplab";
 const posenet = "PoseNet";
 
+const height = 300;
+const width = 300;
+
 export default class App extends Component {
 
   constructor(props) {
@@ -24,6 +27,8 @@ export default class App extends Component {
     this.state = {
       model: null,
       source: null, // to store the image the user selected
+      imageHeight: height,
+      imageWidth: width,
       recognitions: [],
     }
   }
@@ -161,8 +166,30 @@ export default class App extends Component {
     
   }
 
+  renderResults() {
+    const {model, recognitions, imageHeight, imageWidth} = this.state;
+    switch(model) {
+      case ssd:
+      case yolo: 
+        console.log(recognitions);
+        return recognitions.map((res, id) => {
+          // create the squares around the detected objects
+          var left = res['rect']['x'] * imageWidth;
+          var top = res['rect']['y'] * imageHeight;
+          var width = res['rect']['w'] * imageWidth;
+          var height = res['rect']['h'] * imageHeight;
+          return(
+            <View key={id}
+            style={[styles.box, {top, left, width, height}]}>
+              <Text style={{color: 'white', backgroundColor: 'red'}}>{res['detectedClass'] + ' ' + (res['confidenceInClass']*100).toFixed(0) + '%'}</Text>
+            </View>
+          )
+        })
+    }
+  }
+
   render() {
-    const {model} = this.state;
+    const {model, source} = this.state;
 
     var renderButton = (m) => {
       return(
@@ -181,10 +208,18 @@ export default class App extends Component {
           {model ? (
             <View>
               {<Icon.Button name="undo" onPress={this.goBack.bind(this)}></Icon.Button>}
-              <Button 
-                title="Get Image" 
-                buttonStyle={styles.button}
-                onPress={this.onSelectImage.bind(this)}></Button>
+              { source ? (
+                  <View>
+                    {<Image source={source} style={styles.imageOutput}></Image>}
+                    {this.renderResults()}
+                  </View>
+                ) : (             
+                  <Button 
+                    title="Get Image" 
+                    buttonStyle={styles.button}
+                    onPress={this.onSelectImage.bind(this)}>
+                  </Button>)}
+
             </View>
           ) : (
             <View>
@@ -210,5 +245,15 @@ const styles = StyleSheet.create({
     width: 200,
     height: 50,
     margin:5,
+  },
+  imageOutput: {
+    height: height,
+    width: width,
+    marginTop: 10,
+  },
+  box: {
+    position: 'absolute',
+    borderColor: 'red',
+    borderWidth: 2,
   }
 });
