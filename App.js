@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {Button} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
 import Tflite from 'tflite-react-native';
 import Imagepicker from 'react-native-image-picker';
@@ -23,7 +24,7 @@ export default class App extends Component {
     this.state = {
       model: null,
       source: null, // to store the image the user selected
-      recognitions: null,
+      recognitions: [],
     }
   }
 
@@ -153,6 +154,13 @@ export default class App extends Component {
       });
   }
 
+  goBack() {
+    this.setState({model: null});
+    this.setState({source: null});
+    this.setState({recognitions: []});
+    
+  }
+
   render() {
     const {model} = this.state;
 
@@ -172,6 +180,7 @@ export default class App extends Component {
         style={styles.linearGradient}>
           {model ? (
             <View>
+              {<Icon.Button name="undo" onPress={this.goBack.bind(this)}></Icon.Button>}
               <Button 
                 title="Get Image" 
                 buttonStyle={styles.button}
