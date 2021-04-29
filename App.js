@@ -209,10 +209,19 @@ export default class App extends Component {
               <View key={idx} style={{position: 'absolute', top, left, width, height}}>
                 <Text style={{color: 'blue', fontSize: 12}}>{'•'}</Text>
               </View>
-            )
-          })
+            );
+          });
+        });
+      default:
+        return recognitions.map((res, id) => {
+          return (
+            <View style={{alignItems: 'center'}}>
+              <Text key={id +1} style={{color: 'black', fontSize: 16}}>
+                {res['label'] + '-' + (res['confidence'] * 100).toFixed(0) + '%'}
+              </Text>
+            </View>
+          )
         })
-
     }
   }
 
