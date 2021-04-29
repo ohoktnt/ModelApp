@@ -195,6 +195,24 @@ export default class App extends Component {
             </Image>
           </View>
         ) : undefined;
+      case posenet:
+        // wants to put a dot whenever there is a pose
+        console.log(recognitions);
+        return recognitions.map((res, id) => {
+          console.log(res);
+          return Object.values(res['keypoints']).map((k, idx) => {
+            var left = k['x'] * imageWidth;
+            var top = k['y'] * imageHeight;
+            var width = imageWidth;
+            var height = imageHeight;
+            return (
+              <View key={idx} style={{position: 'absolute', top, left, width, height}}>
+                <Text style={{color: 'blue', fontSize: 12}}>{'•'}</Text>
+              </View>
+            )
+          })
+        })
+
     }
   }
 
